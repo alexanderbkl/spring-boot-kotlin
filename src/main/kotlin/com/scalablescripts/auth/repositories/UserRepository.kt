@@ -1,6 +1,6 @@
-package com.amigos.amigos.repositories
+package com.scalablescripts.auth.repositories
 
-import com.amigos.amigos.models.User
+import com.scalablescripts.auth.models.User
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface UserRepository: JpaRepository<User, Int> {

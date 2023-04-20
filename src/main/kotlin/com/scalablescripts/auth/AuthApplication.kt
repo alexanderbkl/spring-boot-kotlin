@@ -1,11 +1,12 @@
-package com.amigos.amigos
+package com.scalablescripts.auth
+
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
 import org.springframework.boot.runApplication
 
 @SpringBootApplication(exclude = [SecurityAutoConfiguration::class])
-class AmigosApplication
+class AuthApplication
 
 fun main(args: Array<String>) {
-	runApplication<AmigosApplication>(*args)
+    runApplication<AuthApplication>(*args)
 }

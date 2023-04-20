@@ -1,11 +1,8 @@
-package com.amigos.amigos.services
+package com.scalablescripts.auth.services
 
-import com.amigos.amigos.models.User
-import com.amigos.amigos.repositories.UserRepository
-import org.springframework.beans.factory.annotation.Autowired
+import com.scalablescripts.auth.models.User
+import com.scalablescripts.auth.repositories.UserRepository
 import org.springframework.stereotype.Service
-import java.util.*
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 
 @Service
 class UserService(private val userRepository: UserRepository) {

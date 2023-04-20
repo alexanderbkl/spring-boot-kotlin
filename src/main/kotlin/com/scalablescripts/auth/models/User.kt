@@ -1,9 +1,8 @@
-package com.amigos.amigos.models
+package com.scalablescripts.auth.models
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import jakarta.persistence.*
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-
+import javax.persistence.*
 
 @Entity
 class User {
