@@ -16,7 +16,13 @@ const AppNavbar = () => {
                         <NavLink href="/">Inicio</NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink href="https://github.com/oktadev/okta-spring-boot-react-crud-example">GitHub</NavLink>
+                        <NavLink href="/groups">Manage tasks 📝</NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink href="/users">Users 👥</NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink href="https://github.com/alexanderbkl/spring-boot-kotlin">GitHub</NavLink>
                     </NavItem>
                 </Nav>
             </Collapse>
