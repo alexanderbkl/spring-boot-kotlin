@@ -1,6 +1,5 @@
 package com.amigos.hacer.porhacer;
 
-import com.amigos.hacer.porhacer.models.Event;
 import com.amigos.hacer.porhacer.models.Group;
 import com.amigos.hacer.porhacer.models.GroupRepository;
 import org.springframework.boot.CommandLineRunner;

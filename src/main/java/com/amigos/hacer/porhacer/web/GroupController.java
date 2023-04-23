@@ -36,7 +36,7 @@ class GroupController {
 
     @GetMapping("/groups")
     Collection<Group> groups(Principal principal) {
-        return groupRepository.findAllByUserId(principal.getName());
+        return groupRepository.findAllByOwnerId(principal.getName());
     }
 
     @GetMapping("/group/{id}")
@@ -64,7 +64,7 @@ class GroupController {
         } else {
             email = details.get("email").toString();
         }
-        group.setUser(user.orElse(new User(userId,
+        group.setOwner(user.orElse(new User(userId,
                 details.get("name").toString(), email)));
 
         Group result = groupRepository.save(group);
@@ -84,5 +84,13 @@ class GroupController {
         log.info("Request to delete group: {}", id);
         groupRepository.deleteById(id);
         return ResponseEntity.ok().build();
+    }
+
+    //get all groups that a user is a member of
+    @GetMapping("/groups/memberof")
+    Collection<Group> groupsMemberOf(Principal principal) {
+        Optional<User> userOptional = userRepository.findById(principal.getName());
+        User user = userOptional.orElseThrow(() -> new RuntimeException("User not found"));
+        return groupRepository.findAllByMembersContainingAndOwnerNot(user, user);
     }
 }

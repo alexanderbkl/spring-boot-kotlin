@@ -1,18 +1,12 @@
-export interface Event {
-    id: number;
-    title: string;
-    date: string;
-}
 
 export interface Group {
+    taskopen: any;
+    open: boolean | undefined;
     id: number;
     name: string;
-    address: string;
-    city: string;
-    stateOrProvince: string;
-    country: string;
-    postalCode: string;
-    events: Event[] | null;
+    members: User[] | null;
+    tasks: Task[] | null;
+    owner: User;
 }
 
 //typescript:
@@ -39,5 +33,15 @@ export interface FriendRequest {
     sender: User;
     status: FriendRequestStatus;
 }
+export enum TaskStatus {
+    PENDING = 'PENDING',
+    IN_PROGRESS = 'IN_PROGRESS',
+    COMPLETED = 'COMPLETED',
+}
 
-
+export interface Task {
+    id: number;
+    name: string;
+    description: string;
+    status: TaskStatus;
+}
