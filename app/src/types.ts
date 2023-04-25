@@ -40,7 +40,8 @@ export enum TaskStatus {
 }
 
 export interface Task {
-    id: number;
+    open: boolean | undefined;
+    id: number|null;
     name: string;
     description: string;
     status: TaskStatus;

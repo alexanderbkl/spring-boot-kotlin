@@ -10,4 +10,6 @@ public interface GroupRepository extends JpaRepository<Group, Long> {
     List<Group> findAllByOwnerId(String id);
     //find all groups where the user is a member but not the owner
     List<Group> findAllByMembersContainingAndOwnerNot(User user, User owner);
+
+
 }

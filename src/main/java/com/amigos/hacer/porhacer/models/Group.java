@@ -24,4 +24,7 @@ public class Group {
 
     @ManyToMany(cascade = CascadeType.PERSIST)
     private Set<User> members;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Task> tasks;
 }

@@ -24,17 +24,30 @@ const GroupList = () => {
                             group.owner.name = "you";
                         });
                         //append data to groups
-                        setGroups(groupsOwner.concat(groupsMember));
+                        const groupsList = groupsOwner.concat(groupsMember);
+
+                        groupsList.forEach((group: Group) => {
+                            fetch(`api/group/${group.id}/tasks`)
+                                .then(response => response.json())
+                                .then(tasks => {
+                                    group.tasks = tasks;
+                                })
+
+                        });
+
+                        setGroups(groupsList);
                     })
                 setLoading(false);
             })
 
 
 
+
+
     }, []);
 
     const initialFormState = {
-        id: 0,
+        id: null,
         name: '',
         description: '',
         status: TaskStatus.PENDING,
@@ -44,10 +57,11 @@ const GroupList = () => {
 
 
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>, groupId: number) => {
         event.preventDefault();
 
-        await fetch(`/api/task${task.id ? `/${task.id}` : ''}`, {
+
+        await fetch(`/api/group/${groupId ? `${groupId}` : ''}/task${task.id ? `/${task.id}` : ''}`, {
             method: (task.id) ? 'PUT' : 'POST',
             headers: {
                 'X-XSRF-TOKEN': cookies['XSRF-TOKEN'],
@@ -56,7 +70,9 @@ const GroupList = () => {
             },
             credentials: 'include',
             body: JSON.stringify(task)
-        });
+        }).then((res => {
+            console.log(res);
+        }));
         setTask(initialFormState);
     }
 
@@ -67,7 +83,7 @@ const GroupList = () => {
     }
 
 
-    const remove = async (id: number) => {
+    const remove = async (id: number | null) => {
         await fetch(`/api/group/${id}`, {
             method: 'DELETE',
             headers: {
@@ -93,6 +109,7 @@ const GroupList = () => {
 
 
     const groupList = groups.map(group => {
+
         {/*Make collapse card cardbody appear below the table row */ }
 
         return <>
@@ -130,7 +147,7 @@ const GroupList = () => {
                                 <Collapse isOpen={group.taskopen}>
                                     <Card>
                                         <CardBody>
-                                            <Form onSubmit={(e) => handleSubmit(e)}>
+                                            <Form onSubmit={(e) => handleSubmit(e, group.id)}>
                                                 <FormGroup>
                                                     <Label for="name">Name</Label>
                                                     <Input type="text" name="name" id="name" value={task.name || ''}
@@ -161,17 +178,51 @@ const GroupList = () => {
                                     </thead>
                                     <tbody>
                                         {group.tasks?.map(task => {
-                                            return <tr key={task.id}>
-                                                <td style={{ whiteSpace: 'nowrap' }}>{task.name}</td>
-                                                <td style={{ whiteSpace: 'nowrap' }}>{task.description}</td>
-                                                <td style={{ whiteSpace: 'nowrap' }}>{task.status}</td>
-                                                <td>
-                                                    <ButtonGroup>
-                                                        <Button size="sm" color="primary" tag={Link} to={"/tasks/" + task.id}>Edit</Button>
-                                                        <Button size="sm" color="danger" onClick={() => remove(task.id)}>Delete</Button>
-                                                    </ButtonGroup>
-                                                </td>
-                                            </tr>
+                                            return <>
+                                                <tr key={task.id}>
+                                                    <td style={{ whiteSpace: 'nowrap' }}>{task.name}</td>
+                                                    <td style={{ whiteSpace: 'nowrap' }}>{task.description}</td>
+                                                    <td style={{ whiteSpace: 'nowrap' }}>{task.status}</td>
+                                                    <td>
+                                                        <ButtonGroup>
+                                                            <Button size="sm" color="primary" onClick={() => {
+                                                                task.open = !task.open
+                                                                setCollapse(!collapse)
+                                                            }}>Edit</Button>
+                                                            <Button size="sm" color="danger" onClick={() => remove(task.id)}>Delete</Button>
+                                                        </ButtonGroup>
+                                                    </td>
+                                                </tr>
+                                                <tr key={task.id && + 100}>
+                                                    <td colSpan={4}>
+                                                        <Collapse isOpen={task.open}>
+                                                            <Card>
+                                                                <CardBody>
+                                                                    <Form onSubmit={(e) => handleSubmit(e, task.id)}>
+                                                                        <FormGroup>
+                                                                            <Label for="name">Name</Label>
+                                                                            <Input type="text" name="name" id="name" value={task.name || ''}
+                                                                                onChange={(e) => handleChange(e)} autoComplete="name" />
+                                                                        </FormGroup>
+                                                                        <FormGroup>
+                                                                            <Label for="description">Description</Label>
+                                                                            {/*multiple lines */}
+                                                                            <Input type="textarea" name="description" id="description" value={task.description || ''}
+
+                                                                                onChange={(e) => handleChange(e)} autoComplete="description" />
+                                                                        </FormGroup>
+                                                                        <FormGroup>
+                                                                            <Button color="primary" type="submit">Save</Button>{' '}
+                                                                            <Button color="secondary" tag={Link} to="/groups">Cancel</Button>
+                                                                        </FormGroup>
+                                                                    </Form>
+                                                                </CardBody>
+                                                            </Card>
+                                                        </Collapse>
+                                                    </td>
+                                                </tr>
+
+                                            </>
                                         })}
                                     </tbody>
                                 </Table>
