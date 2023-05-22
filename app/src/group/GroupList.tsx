@@ -155,6 +155,15 @@ const GroupList = () => {
 
     //create a useeffect for toggle, state and collapse
 
+    interface TaskFormProps {
+        name: string;
+        description: string;
+        task: Task;
+        groupId: number;
+        inputRef: React.RefObject<HTMLInputElement>;
+        handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+        handleSubmit: (event: React.FormEvent<HTMLFormElement>, groupId: number) => void;
+    }
 
     const groupList = groups.map(group => {
 
@@ -255,12 +264,12 @@ const GroupList = () => {
                                                                     <Form onSubmit={(e) => handleTaskSubmit(e, task.id)}>
                                                                         <FormGroup>
                                                                             <Label for="name">Name</Label>
-                                                                            <Input type="text" name="name" id="name" value={formData[task.id]?.name || task.name || ''}
+                                                                            <Input type="text" name="name" id="name" value={(formData as {[key: string]: TaskFormProps})[task.id?.toString() ||'']?.name || task.name || ''}
                                                                                 onChange={(e) => {
                                                                                     setFormData((prevFormData) => ({
                                                                                         ...prevFormData,
-                                                                                        [task.id]: {
-                                                                                            ...prevFormData[task.id],
+                                                                                        [task.id?.toString() || '']: {
+                                                                                            ...(prevFormData as {[key: string]: TaskFormProps})[task.id?.toString() || ''],
                                                                                             name: e.target.value
                                                                                         }
                                                                                     }))
@@ -269,12 +278,13 @@ const GroupList = () => {
                                                                         <FormGroup>
                                                                             <Label for="description">Description</Label>
                                                                             {/*multiple lines */}
-                                                                            <Input type="textarea" name="description" id="description" value={formData[task.id]?.description || task.description || ''}
+                                                                            <Input type="textarea" name="description" id="description" value={(formData as {[key: string]: TaskFormProps})[task.id?.toString() ||'']?.description || task.description || ''}
                                                                                 onChange={(e) => {
+                                                                                    
                                                                                     setFormData((prevFormData) => ({
                                                                                         ...prevFormData,
-                                                                                        [task.id]: {
-                                                                                            ...prevFormData[task.id],
+                                                                                        [task.id?.toString() || '']: {
+                                                                                            ...(prevFormData as {[key: string]: TaskFormProps})[task.id?.toString() || ''],
                                                                                             description: e.target.value
                                                                                         }
                                                                                     }))
