@@ -51,7 +51,7 @@ const Home = () => {
 
     const message = user ?
         <h2>Welcome, {user.name}!</h2> :
-        <p>Please log in to manage your JUG Tour.</p>;
+        <p>Bienvenido a TaskTogether.</p>;
 
     const button = authenticated ?
         <div>
