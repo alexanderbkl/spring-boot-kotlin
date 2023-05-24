@@ -256,10 +256,10 @@ const GroupList = () => {
                                 <Table className="mt-4">
                                     <thead>
                                         <tr>
-                                            <th style={{ width: "20%" }}>Name</th>
-                                            <th style={{ width: "20%" }}>Description</th>
-                                            <th style={{ width: "20%" }}>Status</th>
-                                            <th style={{ width: "20%" }}>Actions</th>
+                                            <th style={{ width: "20%" }}>Nombre</th>
+                                            <th style={{ width: "20%" }}>Descripción</th>
+                                            <th style={{ width: "20%" }}>Estado</th>
+                                            <th style={{ width: "20%" }}>Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
