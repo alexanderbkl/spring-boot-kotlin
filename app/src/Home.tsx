@@ -50,21 +50,24 @@ const Home = () => {
     }
 
     const message = user ?
-        <h2>Welcome, {user.name}!</h2> :
+        <h2>Bienvenido, {user.name}!</h2> :
         <p>Bienvenido a TaskTogether.</p>;
 
     const button = authenticated ?
         <div>
-            <Button className='m-2' color="success" tag={Link} to="/users">View all users</Button>
+            <Button className='m-2' color="success" tag={Link} to="/users">Ver usuarios</Button>
             <br />
-            <Button  className='m-2' color="success" tag={Link} to="/groups">Manage groups</Button>
+            <Button  className='m-2' color="success" tag={Link} to="/groups">Gestionar grupos</Button>
             <br />
             <Button color="link" onClick={logout}>Logout</Button>
         </div> :
-        <Button color="primary" onClick={login}>Login</Button>;
+        <>
+        <p>Para comenzar, por favor, inicia sesión.</p>
+        <Button color="primary" onClick={login}>Login</Button>
+        </>;
 
     if (loading) {
-        return <p>Loading...</p>;
+        return <p>Cargando...</p>;
     }
 
     return (

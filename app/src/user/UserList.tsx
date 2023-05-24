@@ -97,7 +97,7 @@ const UserList = () => {
 
 
     if (loading) {
-        return <p>Loading...</p>;
+        return <p>Cargando...</p>;
     }
 
     const userList = users.map(user => {
@@ -115,7 +115,7 @@ const UserList = () => {
                             user.status === FriendRequestStatus.ACCEPT ?
                                 acceptFriendRequest(user.id) :
                                 cancelFriendRequest(user.id)}>
-                        {user.status ? user.status : 'Add friend request'}
+                        {user.status ? user.status : 'Aceptar petición de amistad'}
                     </Button>
                 </ButtonGroup>
             </td>
@@ -126,14 +126,14 @@ const UserList = () => {
         <div>
             <AppNavbar />
             <Container fluid>
-                <h3>Users list 👤</h3>
-                <Button className='m-2' tag={Link} to="/users/friends">View all friends 👥❤️</Button>
-                <Button className='m-2' tag={Link} to="/users/friends/requests">View all friend requests👥🚧</Button>
+                <h3>Lista de usuarios 👤</h3>
+                <Button className='m-2' tag={Link} to="/users/friends">Ver amigos 👥❤️</Button>
+                <Button className='m-2' tag={Link} to="/users/friends/requests">Ver peticiones de amistad 👥🚧</Button>
                 <Table className="mt-4">
                     <thead>
                         <tr>
                             <th style={{ width: "20%" }}>Id</th>
-                            <th style={{ width: "20%" }}>Name</th>
+                            <th style={{ width: "20%" }}>Nombre</th>
                             <th style={{ width: "10%" }}>Email</th>
                         </tr>
                     </thead>

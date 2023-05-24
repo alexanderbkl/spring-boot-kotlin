@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { Button, ButtonGroup, Card, CardBody, Collapse, Container, Form, FormGroup, Input, Label, Table } from 'reactstrap';
 import AppNavbar from '../AppNavbar';
 import { Link } from 'react-router-dom';
@@ -60,18 +60,20 @@ const GroupList = () => {
     const [task, setTask] = useState<Task>(initialFormState);
 
 
-    const handleTaskSubmit = (e, taskId) => {
+    const handleTaskSubmit = (e: FormEvent<HTMLFormElement>, taskId: string | number | null) => {
         e.preventDefault();
 
 
 
         const taskData = formData[taskId]
 
+        let groupId = '';
+
         groups.forEach((group: Group) => {
             if (group.tasks) {
                 group.tasks.forEach((task: Task) => {
                     if (task.id === taskId) {
-                        console.log("mismo")
+                        groupId = group.id;
                         task.name = taskData.name ? taskData.name : task.name;
                         task.description = taskData.description ? taskData.description : task.description;
                         task.status = taskData.status ? taskData.status : task.status;
@@ -80,13 +82,35 @@ const GroupList = () => {
             }
         })
 
-        setGroups(groups);
 
         //update state
         setFormData({ ...formData, [taskId]: taskData })
 
 
+        console.log("groupId: " + groupId)
+        console.log("taskId: " + taskId)
         console.log(taskData)
+
+        //make a put request to /group/{groupId}/task/{taskId}
+        fetch(`/api/group/${groupId}/task/${taskId}`, {
+            method: 'PUT',
+            headers: {
+                'X-XSRF-TOKEN': cookies['XSRF-TOKEN'],
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body: JSON.stringify(taskData)
+        }).then((res => {
+            console.log(res);
+            setGroups(groups);
+
+        }
+        ));
+
+
+
+
     }
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>, groupId: number) => {
@@ -181,8 +205,8 @@ const GroupList = () => {
                 })}</td>
                 <td>
                     <ButtonGroup>
-                        <Button size="sm" color="primary" tag={Link} to={"/groups/" + group.id}>Edit</Button>
-                        <Button size="sm" color="danger" onClick={() => remove(group.id)}>Delete</Button>
+                        <Button size="sm" color="primary" tag={Link} to={"/groups/" + group.id}>Editar</Button>
+                        <Button size="sm" color="danger" onClick={() => remove(group.id)}>Eliminar</Button>
                     </ButtonGroup>
                 </td>
 
@@ -193,12 +217,12 @@ const GroupList = () => {
                         <Card>
                             <CardBody>
                                 <div className='d-flex dlex-row justify-content-between'>
-                                    <h4>Tasks</h4>
+                                    <h4>Tareas</h4>
                                     <Button color="success" onClick={() => {
                                         group.taskopen = !group.taskopen
                                         setCollapse(!collapse)
                                     }}>
-                                        Add new task
+                                        Añadir tarea nueva
                                     </Button>
                                 </div>
                                 <Collapse isOpen={group.taskopen}>
@@ -206,7 +230,7 @@ const GroupList = () => {
                                         <CardBody>
                                             <Form onSubmit={(e) => handleSubmit(e, group.id)}>
                                                 <FormGroup>
-                                                    <Label for="name">Namea</Label>
+                                                    <Label for="name">Nombre</Label>
                                                     <Input type="text" name="name" id="name" value={task.name || ''}
                                                         onChange={(e) => {
                                                             handleChange(e)
@@ -251,8 +275,8 @@ const GroupList = () => {
                                                                 task.open = !task.open
                                                                 setCollapse(!collapse)
                                                                 console.log(task)
-                                                            }}>Edit</Button>
-                                                            <Button size="sm" color="danger" onClick={() => remove(task.id)}>Delete</Button>
+                                                            }}>Editar</Button>
+                                                            <Button size="sm" color="danger" onClick={() => remove(task.id)}>Eliminar</Button>
                                                         </ButtonGroup>
                                                     </td>
                                                 </tr>
@@ -327,16 +351,16 @@ const GroupList = () => {
             <AppNavbar />
             <Container fluid>
                 <div className="float-end">
-                    <Button color="success" tag={Link} to="/groups/new">Add new task group</Button>
+                    <Button color="success" tag={Link} to="/groups/new">Nuevo grupo de tareas</Button>
                 </div>
                 <h3>Tasks 📝</h3>
                 <Table className="mt-4">
                     <thead>
                         <tr>
-                            <th style={{ width: "20%" }}>Owner</th>
-                            <th style={{ width: "20%" }}>Name</th>
-                            <th>Members</th>
-                            <th style={{ width: "10%" }}>Actions</th>
+                            <th style={{ width: "20%" }}>Propietario</th>
+                            <th style={{ width: "20%" }}>Nombre</th>
+                            <th>Miembros</th>
+                            <th style={{ width: "10%" }}>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>

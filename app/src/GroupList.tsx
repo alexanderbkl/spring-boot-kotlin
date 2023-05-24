@@ -50,8 +50,8 @@ const GroupList = () => {
             })}</td>
             <td>
                 <ButtonGroup>
-                    <Button size="sm" color="primary" tag={Link} to={"/groups/" + group.id}>Edit</Button>
-                    <Button size="sm" color="danger" onClick={() => remove(group.id)}>Delete</Button>
+                    <Button size="sm" color="primary" tag={Link} to={"/groups/" + group.id}>Editar</Button>
+                    <Button size="sm" color="danger" onClick={() => remove(group.id)}>Eliminar</Button>
                 </ButtonGroup>
             </td>
         </tr>

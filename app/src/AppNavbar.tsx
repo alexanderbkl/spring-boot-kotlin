@@ -8,7 +8,7 @@ const AppNavbar = () => {
 
     return (
         <Navbar color="dark" dark expand="md">
-            <NavbarBrand tag={Link} to="/">Home</NavbarBrand>
+            <NavbarBrand tag={Link} to="/">TaskTogether📝</NavbarBrand>
             <NavbarToggler onClick={() => { setIsOpen(!isOpen) }} />
             <Collapse isOpen={isOpen} navbar>
                 <Nav className="justify-content-end" style={{ width: "100%" }} navbar>
@@ -16,13 +16,13 @@ const AppNavbar = () => {
                         <NavLink href="/">Inicio</NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink href="/groups">Manage tasks 📝</NavLink>
+                        <NavLink href="/groups">Gestionar tareas 📝</NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink href="/users">Users 👥</NavLink>
+                        <NavLink href="/users">Usuarios 👥</NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink href="https://github.com/alexanderbkl/spring-boot-kotlin">GitHub</NavLink>
+                        <NavLink target='_blank' href="https://github.com/alexanderbkl/spring-boot-kotlin">GitHub</NavLink>
                     </NavItem>
                 </Nav>
             </Collapse>

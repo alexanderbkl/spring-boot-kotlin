@@ -30,14 +30,14 @@ const FriendsList = () => {
         <div>
             <AppNavbar />
             <Container fluid>
-                <h3>Friends list 👥❤️</h3>
-                <Button className='m-2' tag={Link} to="/users">View all users 👥</Button>
-                <Button className='m-2' tag={Link} to="/users/friends/requests">View all friend requests 👥🚧</Button>
+                <h3>Lista de amigos 👥❤️</h3>
+                <Button className='m-2' tag={Link} to="/users">Ver usuarios 👥</Button>
+                <Button className='m-2' tag={Link} to="/users/friends/requests">Ver peticiones de amistad 👥🚧</Button>
                 <Table className="mt-4">
                     <thead>
                         <tr>
                             <th style={{ width: "20%" }}>Id</th>
-                            <th style={{ width: "20%" }}>Name</th>
+                            <th style={{ width: "20%" }}>Nombre</th>
                             <th style={{ width: "10%" }}>Email</th>
                         </tr>
                     </thead>
