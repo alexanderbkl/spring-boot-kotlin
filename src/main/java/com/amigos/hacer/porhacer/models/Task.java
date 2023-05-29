@@ -10,8 +10,6 @@ import lombok.RequiredArgsConstructor;
 import java.util.Set;
 
 @Data
-@NoArgsConstructor
-@RequiredArgsConstructor
 @Entity
 @Table(name = "tasks")
 public class Task {
@@ -19,10 +17,8 @@ public class Task {
     @Id
     @GeneratedValue
     private Long id;
-    @NonNull
     private String name;
     private String description;
-    @NonNull
     private TaskStatus status;
 
     //groups that this task belongs to

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -60,12 +61,32 @@ public class TaskController {
         Optional<Task> taskOptional = taskRepository.findById(taskId);
         Task taskToUpdate = taskOptional.orElseThrow(() -> new RuntimeException("Task not found"));
 
-        taskToUpdate.setName(task.getName());
-        taskToUpdate.setStatus(task.getStatus());
+
+        if (task.getName() != null) {
+            taskToUpdate.setName(task.getName());
+        }
+        if (task.getDescription() != null) {
+            taskToUpdate.setDescription(task.getDescription());
+        }
+        //if status is null, don't update it
+        if (task.getStatus() != null) {
+            taskToUpdate.setStatus(task.getStatus());
+        }
+        //the above condition is always true, so the following line is equivalent
+
         taskToUpdate.setGroup(group);
         Task result = taskRepository.save(taskToUpdate);
         return ResponseEntity.created(new URI("/api/task/" + result.getId()))
                 .body(result);
+    }
+
+    @DeleteMapping("/group/{id}/task/{taskId}")
+    ResponseEntity<?> deleteTask(@PathVariable Long id, @PathVariable Long taskId) {
+        log.info("Request to delete task: {}", taskId);
+        Optional<Task> taskOptional = taskRepository.findById(taskId);
+        Task task = taskOptional.orElseThrow(() -> new RuntimeException("Task not found"));
+        taskRepository.delete(task);
+        return ResponseEntity.ok().build();
     }
 
 }
