@@ -63,8 +63,6 @@ const GroupList = () => {
     const handleTaskSubmit = (e: FormEvent<HTMLFormElement>, taskId: string | number | null) => {
         e.preventDefault();
 
-
-
         const taskData = formData[taskId]
 
         let groupId = '';
@@ -73,6 +71,7 @@ const GroupList = () => {
             if (group.tasks) {
                 group.tasks.forEach((task: Task) => {
                     if (task.id === taskId) {
+                        console.log(task);
                         groupId = group.id;
                         task.name = taskData.name ? taskData.name : task.name;
                         task.description = taskData.description ? taskData.description : task.description;
@@ -116,6 +115,9 @@ const GroupList = () => {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>, groupId: number) => {
         event.preventDefault();
 
+        //get name and description from the form
+
+        console.log(task);
         if (!groupId || !task.name || !task.description || !task.status) {
             alert("Campos vacíos")
             return;
@@ -131,23 +133,40 @@ const GroupList = () => {
             },
             credentials: 'include',
             body: JSON.stringify(task)
-        }).then((res => {
-            console.log(res);
-        }));
+        }).then((res) => res.json())
+            .then((data) => {
+                console.log(data);
+                //add the task to the group
+                groups.forEach((group: Group) => {
+                    if (group.id === groupId) {
+                        if (group.tasks) {
+                            group.tasks.push(data);
+                        } else {
+                            group.tasks = [data];
+                        }
+                    }
+                })
+                setGroups(groups);
+
+            })
+
+
+
         setTask(initialFormState);
     }
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target
 
-        console.log(name, value);
 
         setTask({ ...task, [name]: value })
     }
 
 
-    const remove = async (id: number | null) => {
-        await fetch(`/api/group/${id}`, {
+    const remove = async (groupId: number | null, taskId: number | null) => {
+        console.log(groupId);
+        // groupId with taskId ? /group/{groupId}/task/{taskId} : /group/{groupId}
+        await fetch(`/api/group/${groupId ? `${groupId}` : ''}/task${taskId ? `/${taskId}` : ''}`, {
             method: 'DELETE',
             headers: {
                 'X-XSRF-TOKEN': cookies['XSRF-TOKEN'],
@@ -156,9 +175,24 @@ const GroupList = () => {
             },
             credentials: 'include'
         }).then(() => {
-            const updatedGroups: Group[] = [...groups].filter((group: Group) => group.id !== id);
-            setGroups(updatedGroups);
-        });
+
+
+            if (taskId) {
+                console.log("taskId: " + taskId)
+                groups.forEach((group: Group) => {
+                    if (group.tasks) {
+                        group.tasks = group.tasks.filter((task: Task) => task.id !== taskId);
+                    }
+                })
+                const groupsCopy = [...groups];
+
+                setGroups(groupsCopy);
+            } else {
+                const updatedGroups: Group[] = [...groups].filter((group: Group) => group.id !== groupId);
+                setGroups(updatedGroups);
+            }
+
+        }).catch((err) => console.log(err));
     }
 
     const [collapse, setCollapse] = useState(false);
@@ -243,11 +277,11 @@ const GroupList = () => {
                                                         onChange={(e) => handleChange(e)} autoComplete="description" />
                                                 </FormGroup>
                                                 <FormGroup>
-                                                    <Button color="primary" type="submit">Save</Button>{' '}
+                                                    <Button color="primary" type="submit">Guardar</Button>{' '}
                                                     <Button color="secondary" onClick={() => {
                                                         group.taskopen = !group.taskopen
                                                         setCollapse(!collapse)
-                                                    }}>Cancel</Button>
+                                                    }}>Cancelar</Button>
                                                 </FormGroup>
                                             </Form>
                                         </CardBody>
@@ -276,7 +310,7 @@ const GroupList = () => {
                                                                 setCollapse(!collapse)
                                                                 console.log(task)
                                                             }}>Editar</Button>
-                                                            <Button size="sm" color="danger" onClick={() => remove(task.id)}>Eliminar</Button>
+                                                            <Button size="sm" color="danger" onClick={() => remove(group.id, task.id)}>Eliminar</Button>
                                                         </ButtonGroup>
                                                     </td>
                                                 </tr>
@@ -335,7 +369,10 @@ const GroupList = () => {
 
                                                                         </FormGroup>
                                                                         <FormGroup>
-                                                                            <Button color="primary" type="submit">Save</Button>{' '}
+                                                                            <Button color="primary" type="submit" onClick={() => {
+                                                                                task.open = !task.open
+                                                                                setCollapse(!collapse)
+                                                                            }}>Save</Button>{' '}
                                                                             <Button color="secondary" onClick={() => {
                                                                                 task.open = !task.open
                                                                                 setCollapse(!collapse)
