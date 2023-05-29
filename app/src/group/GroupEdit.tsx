@@ -65,7 +65,7 @@ const GroupEdit = () => {
         navigate('/groups');
     }
 
-    const title = <h2>{group.id ? 'Edit Group' : 'Add Group'}</h2>;
+    const title = <h2>{group.id ? 'Editar Groupo' : 'Añadir Groupo'}</h2>;
 
     return (<div>
         <AppNavbar />
@@ -73,14 +73,14 @@ const GroupEdit = () => {
             {title}
             <Form onSubmit={(e) => handleSubmit(e)}>
                 <FormGroup>
-                    <Label for="name">Name</Label>
+                    <Label for="name">Nombre</Label>
                     <Input type="text" name="name" id="name" value={group.name || ''}
                         onChange={(e) => handleChange(e)} autoComplete="name" />
                 </FormGroup>
 
                 {/*select option multiple for friends list*/}
                 <FormGroup>
-                    <Label for="members">Friends to include</Label>
+                    <Label for="members">Incluir amigos</Label>
                     <Input
                         type="select"
                         size={4}
@@ -107,8 +107,8 @@ const GroupEdit = () => {
                 </FormGroup>
 
                 <FormGroup>
-                    <Button color="primary" type="submit">Save</Button>{' '}
-                    <Button color="secondary" tag={Link} to="/groups">Cancel</Button>
+                    <Button color="primary" type="submit">Guardar</Button>{' '}
+                    <Button color="secondary" tag={Link} to="/groups">Cancelar</Button>
                 </FormGroup>
             </Form>
         </Container>

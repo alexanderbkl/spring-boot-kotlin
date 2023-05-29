@@ -237,7 +237,7 @@ const GroupList = () => {
                                                         }} autoComplete="name" />
                                                 </FormGroup>
                                                 <FormGroup>
-                                                    <Label for="description">Description</Label>
+                                                    <Label for="description">Descripción</Label>
                                                     {/*multiple lines */}
                                                     <Input type="textarea" name="description" id="description" value={task.description || ''}
                                                         onChange={(e) => handleChange(e)} autoComplete="description" />
@@ -287,33 +287,52 @@ const GroupList = () => {
                                                                 <CardBody>
                                                                     <Form onSubmit={(e) => handleTaskSubmit(e, task.id)}>
                                                                         <FormGroup>
-                                                                            <Label for="name">Name</Label>
-                                                                            <Input type="text" name="name" id="name" value={(formData as {[key: string]: TaskFormProps})[task.id?.toString() ||'']?.name || task.name || ''}
+                                                                            <Label for="name">Nombre</Label>
+                                                                            <Input type="text" name="name" id="name" value={(formData as { [key: string]: TaskFormProps })[task.id?.toString() || '']?.name || task.name || ''}
                                                                                 onChange={(e) => {
                                                                                     setFormData((prevFormData) => ({
                                                                                         ...prevFormData,
                                                                                         [task.id?.toString() || '']: {
-                                                                                            ...(prevFormData as {[key: string]: TaskFormProps})[task.id?.toString() || ''],
+                                                                                            ...(prevFormData as { [key: string]: TaskFormProps })[task.id?.toString() || ''],
                                                                                             name: e.target.value
                                                                                         }
                                                                                     }))
                                                                                 }} autoComplete="name" />
                                                                         </FormGroup>
                                                                         <FormGroup>
-                                                                            <Label for="description">Description</Label>
+                                                                            <Label for="description">Descripción</Label>
                                                                             {/*multiple lines */}
-                                                                            <Input type="textarea" name="description" id="description" value={(formData as {[key: string]: TaskFormProps})[task.id?.toString() ||'']?.description || task.description || ''}
+                                                                            <Input type="textarea" name="description" id="description" value={(formData as { [key: string]: TaskFormProps })[task.id?.toString() || '']?.description || task.description || ''}
                                                                                 onChange={(e) => {
-                                                                                    
+
                                                                                     setFormData((prevFormData) => ({
                                                                                         ...prevFormData,
                                                                                         [task.id?.toString() || '']: {
-                                                                                            ...(prevFormData as {[key: string]: TaskFormProps})[task.id?.toString() || ''],
+                                                                                            ...(prevFormData as { [key: string]: TaskFormProps })[task.id?.toString() || ''],
                                                                                             description: e.target.value
                                                                                         }
                                                                                     }))
                                                                                 }}
                                                                                 autoComplete="description" />
+                                                                            {/*create a select for task status*/}
+                                                                            <Label for="status">Estado</Label>
+                                                                            <Input type="select" name="status" id="status" value={(formData as { [key: string]: TaskFormProps })[task.id?.toString() || '']?.status || task.status || ''}
+                                                                                onChange={(e) => {
+
+                                                                                    setFormData((prevFormData) => ({
+                                                                                        ...prevFormData,
+                                                                                        [task.id?.toString() || '']: {
+                                                                                            ...(prevFormData as { [key: string]: TaskFormProps })[task.id?.toString() || ''],
+                                                                                            status: e.target.value
+                                                                                        }
+                                                                                    }))
+                                                                                }}
+                                                                            >
+                                                                                <option value="PENDING">PENDING</option>
+                                                                                <option value="IN_PROGRESS">IN_PROGRESS</option>
+                                                                                <option value="COMPLETED">COMPLETED</option>
+                                                                            </Input>
+
                                                                         </FormGroup>
                                                                         <FormGroup>
                                                                             <Button color="primary" type="submit">Save</Button>{' '}

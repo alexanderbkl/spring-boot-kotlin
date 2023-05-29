@@ -115,7 +115,7 @@ const UserList = () => {
                             user.status === FriendRequestStatus.ACCEPT ?
                                 acceptFriendRequest(user.id) :
                                 cancelFriendRequest(user.id)}>
-                        {user.status ? user.status : 'Aceptar petición de amistad'}
+                        {user.status ? user.status : 'Enviar petición de amistad'}
                     </Button>
                 </ButtonGroup>
             </td>
